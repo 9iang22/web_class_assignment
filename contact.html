@@ -72,8 +72,8 @@
             console.log(name);
             addtext = "  <div class='col-md-6 col-lg-3 grid-item'>  \
                                     <div class='box-masonry'> \
-                                        <div class='box-masonry-text'> \
-                                            <h4>"+name+"</h4> \
+                                        <div class='box-masonry-text' onclick='has_read(this)'> \
+                                            <h4 id="+name+">"+name+"</h4> \
                                             <div class='box-masonry-desription'> \
                                                 <p>" +msg_dict[name]+"</p> \
                                             </div> \
@@ -98,6 +98,38 @@
         store_msg(name.value,msg.value);
         alert("OK!");
         window.location.reload(); 
+    }
+
+    function get_name(obj)
+    {
+      return obj.children[0].innerHTML;
+    }
+
+    function dele_msg(name)
+    {
+      console.log(name);
+      if(name == "特色植物")
+      {
+        alert("示例消息，无法删除");
+        return false;
+      }
+      delete msg_dict[name];
+      localStorage.setItem("msg_dict",JSON.stringify(msg_dict));
+      msg_dict = JSON.parse(localStorage.getItem(name));
+      window.location.reload();
+      return true;
+    }
+
+    function has_read(obj)
+    {
+      if(obj.style.background=="rgb(152, 251, 152) none repeat scroll 0% 0%"){
+        if(dele_msg(get_name(obj)))
+          alert("Delete!");
+        return;
+        //alert(get_name(obj));
+      }
+      obj.style.background="#98FB98";
+      console.log(obj.style.background);
     }
 
   </script>
@@ -142,11 +174,12 @@
             <div class="col-lg-8">
               <div class="content-column-content">
                 <h1>论坛</h1>
+                <p>点击一下标记已读，再点一下删除该条信息。</p>
                 <hr />
                 <div class="grid row" id="create_here">
                     <div class="col-md-6 col-lg-3 grid-item"> 
                         <div class="box-masonry"> <a href="#msgform" title="" class="box-masonry-image with-hover-overlay"><img src="img/portfolio/add.jpg" alt="" class="img-fluid"></a>
-                          <div class="box-masonry-hover-text-header"> <a href="add.html" class="tile-link">  </a>
+                          <div class="box-masonry-hover-text-header"> <a href="#msgform" class="tile-link">  </a>
                             <h4>添加</h4>
                             <div class="box-masonry-desription">
                                 <p>点击发表评论</p>                                 
@@ -156,7 +189,7 @@
                       </div>
                     <div class="col-md-6 col-lg-3 grid-item"> 
                       <div class="box-masonry"> 
-                        <div class="box-masonry-text"> 
+                        <div class="box-masonry-text" onclick=has_read(this)> 
                           <h4>特色植物</h4>
                           <div class="box-masonry-desription">
                             <p>
